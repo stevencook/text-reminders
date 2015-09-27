@@ -18,6 +18,11 @@ Route::get('/', function () {
 // Require authentication
 Route::group(['middleware' => 'auth'], function () {
 
+	// Redirect home to reminder
+	Route::get('home', function() {
+		return redirect()->action('ReminderController@index');
+	});
+
 	// Reminders Section
 	Route::group(['prefix' => 'reminder'], function() {
 
