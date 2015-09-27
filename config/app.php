@@ -155,6 +155,7 @@ return [
          * Custom Providers...
          */
         App\Providers\FormServiceProvider::class,
+        App\Providers\TwilioServiceProvider::class,
 
 
     ],
