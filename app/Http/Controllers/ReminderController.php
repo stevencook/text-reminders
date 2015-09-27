@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+
 use Auth;
+use App\Reminder;
+use Formatter;
+use Input;
 
 class ReminderController extends Controller
 {
@@ -18,10 +22,19 @@ class ReminderController extends Controller
     {
         $reminders = Auth::user()->reminders;
         $reminderCount = count($reminders);
+        $reminderString = 'You have ';
+        if ($reminderCount == 0) {
+            $reminderString .= 'no reminders';
+        } else if ($reminderCount == 1) {
+            $reminderString .= $reminderCount . ' reminder';
+        } else {
+            $reminderString .= $reminderCount . ' reminders';
+        }
 
         return view('reminders.list', [
             'reminders' => $reminders,
             'reminderCount' => $reminderCount,
+            'reminderString' => $reminderString,
         ]);
     }
 
@@ -43,7 +56,28 @@ class ReminderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validate the input
+        $this->validate($request, [
+            'date' => 'required|date',
+            'message' => 'required|max:140',
+        ]);
+
+        try {
+
+            // Create the reminder
+            $date = Formatter::dateWebToDatabase(Input::get('date'));
+            Auth::user()->reminders()->create([
+                'message' => Input::get('message'),
+                'fires_at' => $date,
+            ]);
+
+            return redirect()->action('ReminderController@index');
+
+        } catch (\Exception $e) {
+            return view('errors.500', array(
+                'message' => $e->getMessage(),
+            ));
+        }
     }
 
     /**
@@ -65,7 +99,22 @@ class ReminderController extends Controller
      */
     public function edit($id)
     {
-        //
+        try {
+            // Verify that reminder belongs to current user
+            $reminder = Auth::user()->reminders()->find($id);
+            if (!$reminder) {
+                throw new \Exception('Reminder not found');
+            }
+
+            return view('reminders.edit', [
+                'reminder' => $reminder,
+            ]);
+
+        } catch (\Exception $e) {
+            return view('errors.500', array(
+                'message' => $e->getMessage(),
+            ));
+        }
     }
 
     /**
@@ -77,7 +126,31 @@ class ReminderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // Validate the input
+        $this->validate($request, [
+            'date' => 'required|date',
+            'message' => 'required|max:140',
+        ]);
+
+        try {
+            // Verify that reminder belongs to current user
+            $reminder = Auth::user()->reminders()->find($id);
+            if (!$reminder) {
+                throw new \Exception('Reminder not found');
+            }
+
+            // Update the reminder
+            $reminder->fires_at = Formatter::dateWebToDatabase(Input::get('date'));
+            $reminder->message = Input::get('message');
+            $reminder->save();
+
+            return redirect()->action('ReminderController@index');
+
+        } catch (\Exception $e) {
+            return view('errors.500', array(
+                'message' => $e->getMessage(),
+            ));
+        }
     }
 
     /**
@@ -88,6 +161,20 @@ class ReminderController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            // Verify that reminder belongs to current user
+            $reminder = Auth::user()->reminders()->find($id);
+            if (!$reminder) {
+                throw new \Exception('Reminder not found');
+            }
+            $reminder->delete();
+
+            return redirect()->action('ReminderController@index');
+
+        } catch (\Exception $e) {
+            return view('errors.500', array(
+                'message' => $e->getMessage(),
+            ));
+        }
     }
 }

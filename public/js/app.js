@@ -29274,6 +29274,14 @@ if ($('#spark-app').length > 0) {
   new Vue(require('laravel-spark'));
 }
 
+/* Custom */
+jQuery(document).ready(function ($) {
+  // Give a confirm box to confirm dangerous actions
+  $('body').on('click', '*[data-confirm]', function () {
+    return confirm($(this).data('confirm') + ' This action cannot be undone.');
+  });
+});
+
 },{"./spark/components":98,"laravel-spark":96,"laravel-spark/core/dependencies":7}],98:[function(require,module,exports){
 
 /*

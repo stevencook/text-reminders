@@ -39,7 +39,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'America/Denver',
 
     /*
     |--------------------------------------------------------------------------
@@ -150,6 +150,13 @@ return [
          */
         Laravel\Spark\Providers\SparkServiceProvider::class,
         App\Providers\SparkServiceProvider::class,
+
+        /**
+         * Custom Providers...
+         */
+        App\Providers\FormServiceProvider::class,
+
+
     ],
 
     /*

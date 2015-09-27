@@ -21,3 +21,12 @@ if ($('#spark-app').length > 0) {
 
 	new Vue(require('laravel-spark'));
 }
+
+
+/* Custom */
+jQuery(document).ready(function($) {
+	// Give a confirm box to confirm dangerous actions
+	$('body').on('click', '*[data-confirm]', function() {
+		return confirm($(this).data('confirm') + ' This action cannot be undone.');
+	});
+});

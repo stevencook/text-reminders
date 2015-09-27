@@ -15,12 +15,25 @@ Route::get('/', function () {
 	return view('spark::welcome');
 });
 
+// Require authentication
 Route::group(['middleware' => 'auth'], function () {
 
-	// List
-	Route::get('home', 'ReminderController@index');
+	// Reminders Section
+	Route::group(['prefix' => 'reminder'], function() {
 
-	// Create
-	Route::get('reminder/create', 'ReminderController@create');
+		// Create
+		Route::get('create', 'ReminderController@create');
+		Route::post('create', 'ReminderController@store');
 
+		// List all
+		Route::get('/', 'ReminderController@index');
+
+		// Update
+		Route::get('edit/{id}', 'ReminderController@edit');
+		Route::patch('edit/{id}', 'ReminderController@update');
+
+		// Delete
+		Route::delete('delete/{id}', 'ReminderController@destroy');
+
+	});
 });

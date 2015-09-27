@@ -23,7 +23,7 @@
 	<div class="row">
 		<div class="col-md-10 col-md-offset-1">
 			<div class="panel panel-default">
-				<div class="panel-heading">Create a Reminder</div>
+				<div class="panel-heading">Edit Reminder</div>
 
 				<div class="panel-body">
 
@@ -39,26 +39,27 @@
 					@endif
 
 					<form class="form-horizontal" role="form" method="POST" id="create-reminder-form">
+						<input type="hidden" name="_method" value="PATCH">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 						<div class="form-group">
 							<label class="col-md-4 control-label">Date</label>
 							<div class="col-md-6">
-								<input type="text" id="reminder-date" class="form-control" name="date" value="{{ Formatter::dateDatabaseToWeb(Formatter::formValue('date')) }}">
+								<input type="text" id="reminder-date" class="form-control" name="date" value="{{ Formatter::dateDatabaseToWeb(Formatter::formValue('date', $reminder->fires_at)) }}">
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="col-md-4 control-label">Message</label>
 							<div class="col-md-6">
-								<textarea type="text" class="form-control" name="message">{{ Formatter::formValue('message') }}</textarea>
+								<textarea type="text" class="form-control" name="message">{{ Formatter::formValue('message', $reminder->message) }}</textarea>
 							</div>
 						</div>
 
 						<div class="form-group">
 							<div class="col-sm-6 col-sm-offset-4">
 								<button type="submit" class="btn btn-primary">
-									Create
+									Update
 								</button>
 
 								<a href="{{ action('ReminderController@index') }}" class="btn btn-default">

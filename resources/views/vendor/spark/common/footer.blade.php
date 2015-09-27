@@ -6,7 +6,7 @@
     <div class="container" style="color: #777;">
         <!-- Company Information -->
         <div class="pull-left" style="padding-top: 28px;">
-            Copyright © {{ Spark::company() }} - <a href="/terms">Terms Of Service</a>
+            Copyright © {{ Spark::company() }} - Current time: {{ date('h:ia') }} MST - <a href="/terms">Terms Of Service</a>
         </div>
 
         <!-- Social Icons -->

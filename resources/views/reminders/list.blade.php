@@ -25,16 +25,40 @@
 		<div class="row">
 			<div class="col-md-10 col-md-offset-1">
 				<div class="panel panel-default">
-					<div class="panel-heading">Your Reminders</div>
+					<div class="panel-heading">{{ $reminderString }}</div>
 
 					<div class="panel-body">
-						<h2>You have {{ $reminderCount }} reminders</h2>
-						<ul>
-							@foreach ($reminders as $reminder)
-								<li>{{ $reminder->message }}</li>
-								<li>{{ $reminder->fires_at }}</li>
-							@endforeach
-						</ul>
+						@if ($reminderCount > 0)
+							<table class="table table-hover">
+								<thead>
+									<tr>
+										<th>Time and Date</th>
+										<th>Message</th>
+										<th> </th>
+										<th> </th>
+									</tr>
+								</thead>
+								<tbody>
+									@foreach ($reminders as $reminder)
+										<tr>
+											<td>{!! Formatter::dateDatabaseToWebPretty($reminder->fires_at) !!}</td>
+											<td>{{ $reminder->message }}</td>
+											<td><a href="{{ action('ReminderController@edit', [$reminder->id]) }}" class="btn btn-primary">Edit</a></td>
+											<td>
+												<form class="form-horizontal" role="form" method="POST" action="{{ action('ReminderController@destroy', [$reminder->id ]) }}">
+													<input type="hidden" name="_method" value="DELETE">
+													<input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+													<button type="submit" class="btn btn-danger" data-confirm="Are you sure you want to delete '{{{ $reminder->message }}}'?">
+														Delete
+													</button>
+												</form>
+											</td>
+										</tr>
+									@endforeach
+								</tbody>
+							</table>
+						@endif
 						<p><a class="btn btn-primary" href="{{ action('ReminderController@create') }}">Add a reminder</a></p>
 					</div>
 				</div>
