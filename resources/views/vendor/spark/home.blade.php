@@ -28,7 +28,7 @@
 					<div class="panel-heading">Dashboard</div>
 
 					<div class="panel-body">
-						Your Reminders
+						Your Application's Dashboard.
 					</div>
 				</div>
 			</div>

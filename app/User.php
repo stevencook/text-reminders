@@ -63,4 +63,11 @@ class User extends Model implements AuthorizableContract,
     protected $dates = [
         'trial_ends_at', 'subscription_ends_at',
     ];
+
+
+    // Get the reminders belonging to this user
+    public function reminders() {
+        return $this->hasMany('App\Reminder');
+    }
+
 }

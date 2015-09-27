@@ -15,6 +15,12 @@ Route::get('/', function () {
 	return view('spark::welcome');
 });
 
-Route::get('home', ['middleware' => 'auth', function () {
-	return view('home');
-}]);
+Route::group(['middleware' => 'auth'], function () {
+
+	// List
+	Route::get('home', 'ReminderController@index');
+
+	// Create
+	Route::get('reminder/create', 'ReminderController@create');
+
+});

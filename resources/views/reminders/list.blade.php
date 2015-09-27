@@ -25,10 +25,17 @@
 		<div class="row">
 			<div class="col-md-10 col-md-offset-1">
 				<div class="panel panel-default">
-					<div class="panel-heading">Dashboard</div>
+					<div class="panel-heading">Your Reminders</div>
 
 					<div class="panel-body">
-						Your Reminders
+						<h2>You have {{ $reminderCount }} reminders</h2>
+						<ul>
+							@foreach ($reminders as $reminder)
+								<li>{{ $reminder->message }}</li>
+								<li>{{ $reminder->fires_at }}</li>
+							@endforeach
+						</ul>
+						<p><a class="btn btn-primary" href="{{ action('ReminderController@create') }}">Add a reminder</a></p>
 					</div>
 				</div>
 			</div>
