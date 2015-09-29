@@ -11,11 +11,17 @@
 |
 */
 
+// Home page
 Route::get('/', function () {
-	return view('spark::welcome');
+	if (Auth::check()) {
+		return redirect()->action('ReminderController@index');
+	} else {
+		return view('spark::welcome');
+	}
 });
 
-// Require authentication
+
+// Authenticated user routes
 Route::group(['middleware' => 'auth'], function () {
 
 	// Redirect home to reminder
