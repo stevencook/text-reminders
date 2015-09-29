@@ -34,6 +34,7 @@
 									<tr>
 										<th>Time and Date</th>
 										<th>Message</th>
+										<th>Status</th>
 										<th> </th>
 										<th> </th>
 									</tr>
@@ -43,6 +44,13 @@
 										<tr>
 											<td>{!! Formatter::dateDatabaseToWebPretty($reminder->fires_at) !!}</td>
 											<td>{{ $reminder->message }}</td>
+											<td>
+												@if ($reminder->fired_at)
+													Sent
+												@else
+													Waiting
+												@endif
+											</td>
 											<td><a href="{{ action('ReminderController@edit', [$reminder->id]) }}" class="btn btn-primary">Edit</a></td>
 											<td>
 												<form class="form-horizontal" role="form" method="POST" action="{{ action('ReminderController@destroy', [$reminder->id ]) }}">
