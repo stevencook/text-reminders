@@ -48,21 +48,4 @@ Route::group(['middleware' => 'auth'], function () {
 
 	});
 
-	// Test Twilio route
-	Route::get('twilio', function() {
-
-		$account_sid = env('TWILIO_ACCOUNT_SID', ''); // Your Twilio account sid
-		$auth_token = env('TWILIO_AUTH_TOKEN', ''); // Your Twilio auth token
-
-		$client = new Services_Twilio($account_sid, $auth_token);
-		$message = $client->account->messages->sendMessage(
-		  env('TWILIO_PHONE_NUMBER', ''), // From a Twilio number in your account
-		  env('TEST_RECEIVE_PHONE_NUMBER', ''), // Text any number
-		  "Test message sent from Twilio!"
-		);
-
-		echo 'Sent from ' . env('TWILIO_PHONE_NUMBER', '') . '<br/>';
-		print $message->sid;
-
-	});
 });
